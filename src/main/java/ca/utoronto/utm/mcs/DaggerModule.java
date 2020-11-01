@@ -22,7 +22,7 @@ public class DaggerModule {
 	
     @Provides public MongoClient provideMongoClient() {
         /* TODO: Fill in this function */
-    	db = MongoClients.create("mongodb://localhost:27017/csc301a2");
+    	db = MongoClients.create("mongodb://localhost:27017");
     	return db;
     }
 

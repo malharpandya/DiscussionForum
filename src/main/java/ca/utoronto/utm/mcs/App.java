@@ -17,7 +17,8 @@ public class App
     	Dagger service = DaggerDaggerComponent.create().buildMongoHttp();
     	
     	//Create your server context here
-        
+    	service.getServer().createContext("/api/v1/post", new Post());
+    	
     	service.getServer().start();
     	
     	System.out.printf("Server started on port %d", port);

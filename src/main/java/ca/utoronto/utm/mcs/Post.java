@@ -56,9 +56,11 @@ public class Post implements HttpHandler {
                 handlePut(exchange);
             }
 			
-		} catch (Exception e){
-			e.printStackTrace();
+		} catch (IOException e){
 			exchange.sendResponseHeaders(405, -1);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

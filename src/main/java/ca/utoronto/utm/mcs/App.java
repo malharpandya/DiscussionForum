@@ -16,8 +16,11 @@ public class App
     {
     	Dagger service = DaggerDaggerComponent.create().buildMongoHttp();
     	
+    	Post post = new Post();
+    	
+    	post.setDatabaseAndCollection("csc301a2", "posts");
     	//Create your server context here
-    	service.getServer().createContext("/api/v1/post", new Post());
+    	service.getServer().createContext("/api/v1/post", post);
     	
     	service.getServer().start();
     	

@@ -49,19 +49,17 @@ public class Post implements HttpHandler {
 	}
 	
 	@Override
-	public void handle(HttpExchange exchange) throws IOException {
+	public void handle(HttpExchange exchange) {
 		// TODO Auto-generated method stub
 		try {
 			if (exchange.getRequestMethod().equals("PUT")) {
                 handlePut(exchange);
+            } else {
+            	exchange.sendResponseHeaders(405, -1);
             }
-			
-		} catch (IOException e){
-			exchange.sendResponseHeaders(405, -1);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	private void handlePut(HttpExchange exchange) throws IOException, JSONException {

@@ -59,12 +59,14 @@ public class Post implements HttpHandler {
 	
 	@Override
 	public void handle(HttpExchange exchange) {
-		// TODO Auto-generated method stub
+		
 		try {
 			if (exchange.getRequestMethod().equals("PUT")) {
                 handlePut(exchange);
             } else if (exchange.getRequestMethod().equals("GET")) {
                 handleGet(exchange);
+            } else if (exchange.getRequestMethod().equals("DELETE")){
+            	handleDelete(exchange);
             } else {
             	exchange.sendResponseHeaders(405, -1);
             }
@@ -74,7 +76,7 @@ public class Post implements HttpHandler {
 	}
 
 	private void handlePut(HttpExchange exchange) throws IOException, JSONException {
-		// TODO Auto-generated method stub
+		
 		try {
 
 			String body = Utils.convert(exchange.getRequestBody());
@@ -116,6 +118,7 @@ public class Post implements HttpHandler {
 	}
 	
 	private void handleGet(HttpExchange exchange) throws IOException, JSONException {
+
 		try {
 			
 			String body = Utils.convert(exchange.getRequestBody());
@@ -181,6 +184,45 @@ public class Post implements HttpHandler {
         } catch (Exception e) {
         	exchange.sendResponseHeaders(500, -1); // internal error
         }
+	}
+	
+	private void handleDelete(HttpExchange exchange) throws IOException, JSONException {
+		
+		try {
+			
+			String body = Utils.convert(exchange.getRequestBody());
+			JSONObject deserialized = new JSONObject(body);
+			
+			if (deserialized.has("_id")) {
+				
+				String idString = deserialized.getString("_id");
+				if (!ObjectId.isValid(idString)) {
+					exchange.sendResponseHeaders(400, -1); //invalid id string
+					
+				} else {
+					
+					ObjectId id = new ObjectId(idString);
+					Document deletedPost = collection.findOneAndDelete(eq("_id", id));
+					
+					if (deletedPost == null) {
+						exchange.sendResponseHeaders(404, -1); //document not found
+					} else {
+						exchange.sendResponseHeaders(200, -1);
+					}
+				}
+				
+				
+			} else {
+				exchange.sendResponseHeaders(400, -1); // missing information
+			}
+			
+		} catch (JSONException e){
+			exchange.sendResponseHeaders(400, -1); // bad format
+			
+		} catch (Exception e) {
+			exchange.sendResponseHeaders(500, -1); // internal error
+		}
+		
 	}
 
 }

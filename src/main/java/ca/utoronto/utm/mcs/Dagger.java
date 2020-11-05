@@ -8,12 +8,12 @@ import com.sun.net.httpserver.HttpServer;
 public class Dagger {
 
 	private HttpServer server;
-	private MongoClient db;
+	private MongoClient mongoclient;
 
 	@Inject
-	public Dagger(HttpServer server, MongoClient db) {
+	public Dagger(HttpServer server, MongoClient mongoclient) {
 		this.server = server;
-		this.db = db;
+		this.mongoclient = mongoclient;
 	}
 
 	public HttpServer getServer() {
@@ -24,12 +24,12 @@ public class Dagger {
 		this.server = server;
 	}
 
-	public MongoClient getDb() {
-		return this.db;
+	public MongoClient getClient() {
+		return this.mongoclient;
 	}
 
-	public void setDb(MongoClient db) {
-		this.db = db;
+	public void setDb(MongoClient mongoclient) {
+		this.mongoclient = mongoclient;
 	}
 
 }

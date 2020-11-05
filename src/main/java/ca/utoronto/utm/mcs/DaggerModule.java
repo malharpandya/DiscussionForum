@@ -13,26 +13,26 @@ import com.mongodb.client.MongoClients;
 
 @Module
 public class DaggerModule {
-	
+
 	static int port = 8080;
 	private static HttpServer server;
 	private static MongoClient mongoclient;
-	
-    @Provides public MongoClient provideMongoClient() {
-		/* TODO: Fill in this function */
-    	mongoclient = MongoClients.create();
 
-    	return mongoclient;
-    }
+	@Provides
+	public MongoClient provideMongoClient() {
+		mongoclient = MongoClients.create();
 
-    @Provides public HttpServer provideHttpServer() {
-        /* TODO: Fill in this function */
-    	try {
+		return mongoclient;
+	}
+
+	@Provides
+	public HttpServer provideHttpServer() {
+		try {
 			server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-    	return server;
-    }
+		return server;
+	}
 }

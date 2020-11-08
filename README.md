@@ -16,7 +16,7 @@ Note for the T.A/Prof:
   ![alt text](https://github.com/UTSCCSCC01/a2-han-solo/blob/master/git%20branch.png "local git branches")
   ![alt text](https://github.com/UTSCCSCC01/a2-han-solo/blob/master/git%20log%20--graph%20--decorate%20--oneline.png "local git graph")
   
-  I hope you recognize this as a tiny error, and that I still followedd the gitflow "locally".
+  I hope you recognize this as a tiny error, and that I still followed the gitflow "locally".
   
   Thank you,
   

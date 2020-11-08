@@ -85,13 +85,12 @@ public class Post implements HttpHandler {
 					}
 
 					Document post = createPost(title, author, content, tags);
-
-					collection.insertOne(post);
 					
 					Iterator<Document> duplicates = collection.find(and(eq("title", title), eq("author", author))).iterator();
 					if (duplicates.hasNext()) {
 						exchange.sendResponseHeaders(409, -1);
 					} else {
+						collection.insertOne(post);
 						JSONObject response = new JSONObject().put("_id", post.getObjectId("_id"));
 
 						exchange.sendResponseHeaders(200, response.toString().length());

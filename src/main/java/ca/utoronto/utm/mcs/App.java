@@ -8,7 +8,7 @@ public class App {
 	public static void main(String[] args) throws IOException {
 		Dagger service = DaggerDaggerComponent.create().buildMongoHttp();
 
-		service.getServer().createContext("/api/v1/post", new Post(service.getClient()));
+		service.getServer().createContext("/api/v1/post", service.getPost());
 
 		service.getServer().start();
 

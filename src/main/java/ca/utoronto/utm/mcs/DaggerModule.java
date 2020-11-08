@@ -17,11 +17,11 @@ public class DaggerModule {
 	static int port = 8080;
 	private static HttpServer server;
 	private static MongoClient mongoclient;
+	private static Post post;
 
 	@Provides
 	public MongoClient provideMongoClient() {
 		mongoclient = MongoClients.create();
-
 		return mongoclient;
 	}
 
@@ -34,5 +34,11 @@ public class DaggerModule {
 			e.printStackTrace();
 		}
 		return server;
+	}
+	
+	@Provides
+	public Post providePost(MongoClient mongoclient) {
+		post = new Post(mongoclient);
+		return post;
 	}
 }

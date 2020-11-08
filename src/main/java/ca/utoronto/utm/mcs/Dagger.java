@@ -9,11 +9,12 @@ public class Dagger {
 
 	private HttpServer server;
 	private MongoClient mongoclient;
+	private Post post;
 
 	@Inject
-	public Dagger(HttpServer server, MongoClient mongoclient) {
+	public Dagger(HttpServer server, Post post) {
 		this.server = server;
-		this.mongoclient = mongoclient;
+		this.post = post;
 	}
 
 	public HttpServer getServer() {
@@ -30,6 +31,10 @@ public class Dagger {
 
 	public void setDb(MongoClient mongoclient) {
 		this.mongoclient = mongoclient;
+	}
+	
+	public Post getPost() {
+		return post;
 	}
 
 }

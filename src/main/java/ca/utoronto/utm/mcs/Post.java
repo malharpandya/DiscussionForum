@@ -11,6 +11,7 @@ import org.json.*;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 
@@ -75,23 +76,33 @@ public class Post implements HttpHandler {
 				String title = deserialized.getString("title");
 				String author = deserialized.getString("author");
 				String content = deserialized.getString("content");
-				ArrayList<String> tags = new ArrayList<String>();
-				JSONArray tagsArray = deserialized.getJSONArray("tags");
-				for (int i = 0; i < tagsArray.length(); i++) {
-					tags.add(tagsArray.getString(i));
+				if (!title.isBlank() && !author.isBlank() && !content.isBlank()) {
+					
+					ArrayList<String> tags = new ArrayList<String>();
+					JSONArray tagsArray = deserialized.getJSONArray("tags");
+					for (int i = 0; i < tagsArray.length(); i++) {
+						tags.add(tagsArray.getString(i));
+					}
+
+					Document post = createPost(title, author, content, tags);
+					
+					Iterator<Document> duplicates = collection.find(and(eq("title", title), eq("author", author))).iterator();
+					if (duplicates.hasNext()) {
+						exchange.sendResponseHeaders(409, -1);
+					} else {
+						collection.insertOne(post);
+						JSONObject response = new JSONObject().put("_id", post.getObjectId("_id"));
+
+						exchange.sendResponseHeaders(200, response.toString().length());
+
+						OutputStream os = exchange.getResponseBody();
+						os.write(response.toString().getBytes());
+						os.close();
+					}
+					
+				} else {
+					exchange.sendResponseHeaders(400, -1); // missing information
 				}
-
-				Document post = createPost(title, author, content, tags);
-
-				collection.insertOne(post);
-
-				JSONObject response = new JSONObject().put("_id", post.getObjectId("_id"));
-
-				exchange.sendResponseHeaders(200, response.toString().length());
-
-				OutputStream os = exchange.getResponseBody();
-				os.write(response.toString().getBytes());
-				os.close();
 			} else {
 				exchange.sendResponseHeaders(400, -1); // missing information
 			}

@@ -29,7 +29,7 @@ public class Dagger {
 		return this.mongoclient;
 	}
 
-	public void setDb(MongoClient mongoclient) {
+	public void setClient(MongoClient mongoclient) {
 		this.mongoclient = mongoclient;
 	}
 	

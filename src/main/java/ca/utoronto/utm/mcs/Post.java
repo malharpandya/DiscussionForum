@@ -11,7 +11,6 @@ import org.json.*;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
 
@@ -86,7 +85,7 @@ public class Post implements HttpHandler {
 
 					Document post = createPost(title, author, content, tags);
 					
-					Iterator<Document> duplicates = collection.find(and(eq("title", title), eq("author", author))).iterator();
+					Iterator<Document> duplicates = collection.find(and(eq("title", title), eq("author", author), eq("content", content), eq("tags", tags))).iterator();
 					if (duplicates.hasNext()) {
 						exchange.sendResponseHeaders(409, -1);
 					} else {
